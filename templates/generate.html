@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Wazuh rule's generator{% endblock %}
+{% block content %}
+<div class="text-center">
+  <h1>Results</h1>
+  <p>The generated xml is below. :)</p>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+	<pre lang="xml">{{ content }}</pre>
+  </div>
+</div>
+{% endblock %}
+
+

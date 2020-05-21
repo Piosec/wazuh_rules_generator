@@ -1,0 +1,382 @@
+{% extends "base.html" %}
+{% block title %}Wazuh rule's generator{% endblock %}
+{% block content %}
+
+
+
+
+<div class="container-fluid text-center">
+  <div class="row content">
+<!--
+      <div class="col-sm-2 sidenav">
+      <p><a href="#">Link</a></p>
+      <p><a href="#">Link</a></p>
+      <p><a href="#">Link</a></p>
+    </div>
+-->
+    <div class="col-sm-12 text-center">
+	    <!-- Content -->
+	
+	<form action="/generate" method="POST">
+		<h3>Rule configuration</h3>
+		<p>For more information about values, please refer to the Wazuh documentation <a href="https://documentation.wazuh.com/3.9/user-manual/ruleset/ruleset-xml-syntax/rules.html">here</a>.
+		<div class="form-row col-lg-14 control-label justify-content-center">
+			<div class="form-group col-md-1">
+				<label for="ruleLevel">Level</label>
+				<select name="level" class="form-control" id="ruleLevel">
+					<option selected="selected">level</option>
+					{% for level in range(1,17) %}
+						<option value="{{ level }}">{{ level }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="form-group col-md-1">
+				<label for="ruleId">Id</label>
+				<input name="id" value="" required="required" type="text" class="form-control" id="ruleId" placeholder="Ex: 100100">
+			</div>
+			<div class="form-group col-md-1">
+				<label for="ruleMaxSize">Max Size</label>
+				<input name="maxsize" value="" type="text" class="form-control" id="ruleMaxsize" placeholder="Ex: 100">
+			</div>
+			<div class="form-group col-md-1">
+				<label for="ruleFreq">Frequency</label>
+				<input name="frequency" value="" type="text" class="form-control" id="ruleFreq" placeholder="Ex: 99">
+			</div>
+			<div class="form-group col-md-1">
+				<label for="ruleTimeFrame">Timeframe</label>
+				<input name="timeframe" value="" type="text" class="form-control" id="ruleTimeFrame" placeholder="Ex: 100100">
+			</div>
+			<div class="form-group col-md-1">
+				<label for="ruleIgnore">Ignore</label>
+				<input name="ignore" value="" type="text" class="form-control" id="ruleIgnore" placeholder="Ex: 100100">
+			</div>
+			<div class="form-group col-md-1">
+				<label for="ruleOverwrite">Overwrite</label>
+				<select name="overwrite" class="form-control" id="ruleOverwrite">
+					<option selected="selected">Overwrite</option>
+					<option value="yes">Yes</option>
+					<option value="no">No</option>
+				</select>	
+			</div>
+			<div class="form-group col-md-1">
+				<label for="ruleNoalert">No alert</label>
+				<select name="noalert" class="form-control" id="ruleNoalert">
+					<option selected="selected" >No alert</option>
+					<option value="yes">Yes</option>
+					<option value="no">No</option>
+				</select>	
+			</div>
+		</div>
+		<!-- end header-->
+
+
+		<!-- Begin two columns -->
+
+		<div class="container">
+		  <div class="row">
+		    <div class="col-sm-6" >
+			<div class="form-group">
+				<div class="form-inline">
+					<label class="col-sm-6 control-label" for="match">Match</label>
+					<input name="match" value="" type="text" class="form-control" id="match" placeholder="Ex: 192.168.0.1">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- decode_as-->
+				<div class="form-inline">
+					<label class="col-sm-6" for="decodeas">Decode as</label>
+					<input name="decodeas" value="" type="text" class="form-control" id="decodeas" placeholder="Ex: LinuxDecoder">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- field -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="field">Extracted field</label>
+					<input name="field" value="" type="text" class="form-control" id="field" placeholder="Ex: ExtractedName">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- dstip -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="dstip">destination IP</label>
+					<input name="dstip" value="" type="text" class="form-control" id="dstip" placeholder="Ex: 10.4.69.5">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- user -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="username">Username</label>
+					<input name="username" value="" type="text" class="form-control" id="username" placeholder="Ex: luffy">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- hostname -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="hostname">Hostname</label>
+					<input name="hostname" value="" type="text" class="form-control" id="hostname" placeholder="Ex: H4x0r">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- weekday -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="weekday">Weekday</label>
+					<input name="weekday" value="" type="text" class="form-control" id="weekday" placeholder="Ex: weekdays">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- url-->
+				<div class="form-inline">
+					<label class="col-sm-6" for="url">Url</label>
+					<input name="url" value="" type="text" class="form-control" id="url" placeholder="Ex: http://www.evil.com">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- action -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="action">Action</label>
+					<input name="action" value="" type="text" class="form-control" id="action">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- if group -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="ifgroup">If the group has matched</label>
+					<input name="if_group" value="" type="text" class="form-control" id="ifgroup" placeholder="Ex: 2233">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- if matched sid -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="ifmatchedsid">If the SID has matched in a set number of seconds</label>
+					<input name="if_matched_sid" value="" type="text" class="form-control" id="ifmatchedsid" placeholder="Ex: 1000">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- if fts -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="iffts">If fts</label>
+					<input name="if_fts" value="" type="text" class="form-control" id="iffts" >
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- same_source_ip -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="samesrcip">Same source IP</label>
+					<input name="same_source_ip" value="" type="text" class="form-control" id="samesrcip" >
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- same_dst_port --> 
+				<div class="form-inline">
+					<label class="col-sm-6" for="samedstport">Same destination port</label>
+					<input name="same_dst_port" value="" type="text" class="form-control" id="samedstport" >
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- same_user -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="sameuser">Same user</label>
+					<input name="same_user" value="" type="text" class="form-control" id="sameuser" placeholder="Ex: (\d+){3}">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- not_same_field -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="notsamefield">Not same field</label>
+					<input name="not_same_field" value="" type="text" class="form-control" id="notsamefield" placeholder="Ex: (\d+){3}">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- description-->
+				<div class="form-inline">
+					<label class="col-sm-6" for="description">Description</label>
+					<input name="description" value="" type="text" class="form-control" id="description" placeholder="Ex: (\d+){3}">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- info -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="info">Info</label>
+					<input name="info" value="" type="text" class="form-control" id="info" placeholder="Ex: (\d+){3}">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- check diff-->
+				<div class="form-inline">
+					<label class="col-sm-6" for="checkdiff">Check diff</label>
+					<input name="check_diff" value="" type="text" class="form-control" id="checkdiff" >
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- var-->
+				<div class="form-inline">
+					<label class="col-sm-6" for="var">Var</label>
+					<input name="var" value="" type="text" class="form-control" id="var" >
+				</div>
+			</div>   
+		    </div>
+		    <div class="col-sm-6" >
+		    	<div class="form-group">
+				<!-- regex-->
+				<div class="form-inline">
+					<label class="col-sm-6" class="col-sm-6 control-label" for="regex">Regex</label>
+					<input name="regex" value="" type="text" class="form-control" id="regex" placeholder="Ex: (\d+){3}">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- category-->
+				<div class="form-inline">
+					<label class="col-sm-6" for="category">Category</label>
+					<input name="regex" value="" type="text" class="form-control" id="category" placeholder="Ex: syslog, firewall">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- srcip -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="srcip">Source IP</label>
+					<input name="srcip" value="" type="text" class="form-control" id="srcip" placeholder="Ex: 10.4.69.5">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- extra_data -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="extradata">Extra data</label>
+					<input name="extradata" value="" type="text" class="form-control" id="extradata" placeholder="Ex: Hello">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- program_name -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="programname">Program name</label>
+					<input name="program_name" value="" type="text" class="form-control" id="programname" placeholder="Ex: gnome">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- time -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="time">Time</label>
+					<input name="time" value="" type="text" class="form-control" id="time" placeholder="Ex: 08:23 am-05:39 pm">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- id-->
+				<div class="form-inline">
+					<label class="col-sm-6" for="id">Decoded as ID</label>
+					<input name="decodedasid" value="" type="text" class="form-control" id="id" placeholder="Ex: 7769">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- location -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="location">Location</label>
+					<input name="location" value="" type="text" class="form-control" id="location" placeholder="Ex:Wazuh-Docker">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- if sid -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="ifsid">If the SID has matched</label>
+					<input name="if_sid" value="" type="text" class="form-control" id="ifsid" placeholder="Ex: 1122">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- if level -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="iflevel">If the level has matched</label>
+					<input name="if_level" value="" type="text" class="form-control" id="iflevel" placeholder="Ex: 3">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- if matched group -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="ifmatchedgroup">If the group has matched in a set number of seconds</label>
+					<input name="if_matched_group" value="" type="text" class="form-control" id="ifmatchedgroup" placeholder="Ex: 2233">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- same id -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="sameid">Same id </label>
+					<input name="same_id" value="" type="text" class="form-control" id="sameid">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- same_src_port -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="samesrcport">Same source port</label>
+					<input name="same_src_port" value="" type="text" class="form-control" id="samesrcport" >
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- same_location -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="samelocation">Same location</label>
+					<input name="same_location" value="" type="text" class="form-control" id="samelocation">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- same_field -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="samefield">Same field</label>
+					<input name="same_field" value="" type="text" class="form-control" id="samefield" placeholder="Ex: (\d+){3}">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- different_url-->
+				<div class="form-inline">
+					<label class="col-sm-6" for="differenturl">Different URL</label>
+					<input name="different_url" value="" type="text" class="form-control" id="differenturl" placeholder="Ex: (\d+){3}">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- list -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="list">List</label>
+					<input name="list" value="" type="text" class="form-control" id="list" placeholder="Ex: (\d+){3}">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- options -->
+				<div class="form-inline">
+					<label class="col-sm-6" for="optionsx">Options</label>
+					<select name="options" class="form-control" id="options">
+						<option selected="selected" >Options</option>
+						<option value="alert_by_email">Alert by email</option>
+						<option value="no_email_alert">Never alert by email</option>
+						<option value="no_log">Do not log this alert</option>
+						<option value="no_full_log">Do not include "Full log"</option>
+						<option value="no_counter">Omit field rule.firedtimes</option>
+					</select>	
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- status-->
+				<div class="form-inline">
+					<label class="col-sm-6" for="status">Status</label>
+					<input name="status" value="" type="text" class="form-control" id="status">
+				</div>
+			</div>
+		    	<div class="form-group">
+				<!-- bad words-->
+				<div class="form-inline">
+					<label class="col-sm-6" for="badwords">Bad Words</label>
+					<input name="bad_words" value="" type="text" class="form-control" id="badwords" >
+				</div>
+			</div>
+		    </div>
+		  </div>
+		</div>
+
+
+		<!-- end two columns -->
+
+
+		<button type="submit" class="btn btn-primary" >Submit</button>
+	</form>
+	</div>
+    </div>
+</div>
+
+
+{% endblock %}
+

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Wazuh rule's generator{% endblock %}
+{% block content %}
+<div class="text-center">
+  <h1>Results</h1>
+  <p>The json configuration is below. :)</p>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+	<form action="{{ url_for('config') }}" method="post">
+		<div class="form-group text-center">
+			<textarea class="form-control" rows="15" height="8" name="config">	
+			{{ content }}
+			</textarea>
+		<input type="submit">
+		</div>
+	</form>
+  </div>
+</div>
+
+{% endblock %}
+
